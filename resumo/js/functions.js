@@ -4344,6 +4344,90 @@ comp1.ligar();
 comp1.ligar();
 comp1.mostraProcessador();
 console.log(comp1);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//criando métodos estáticos
+//pode instaciar sem usar o new
+//como se fosse funcoes que estão dentro da classe, ou sej,a método que faz algo na classe mas que só tá na classe, nao vai de herança
+
+//obs:assim como posso criar um função dentro da classe, posso criar fora e usar tb
+//evitar usar assim
+function teste(){
+  console.log('Testando!');
+}
+
+class ControleRemoto{
+  constructor(tv){
+    //esses this são referentes à instância, ou seja, à um novo criado, por exemplo: const controle1 = new ControleRemoto('Toshiba');
+    this.tv = tv;
+    this.volume = 0; //volume inicia como 0
+    teste(); //posso chamar uma função de fora, aqui dentro... quando chamar o new, o new vai chamar  o constructor e executar a função
+  }
+
+  //métodos de instância,
+  //método aumentar volume mexe na propriedade da instância, ou seja, quem vai ser criado com o const(instaciado) como exemplo a Toshiba
+  aumentarVolume(){
+    this.volume = this.volume + 2; //pula de dois em dois o volume para mais
+  }
+
+  diminuirVolume(){
+    this.volume = this.volume - 2;// pula de dois em dois o volume para menos
+  }
+
+  // faz-se ControleRemoto.trocaPiha();
+  //método estático que vale para todos os controles, exemplo: quando trocar a pilha de um, deve-se trocar de todos
+  static trocaPilha(){
+    console.log('Ok, pilha trocada');
+  }
+
+  //método estático recebendo valor por parametro/argumento
+  //obs:qualquer método pode receber um parametro
+  //obs:  o this do método static referencia a classe ControleRemoto e não à instância
+  static soma(x,y){
+    console.log(this.volume); // aqui dá undefined, pois o método estático não tem acesso ao global, o que porva nossa teoria.
+    return x + y;
+
+  }
+}
+
+const controle1 = new ControleRemoto('LG');
+
+
+  ControleRemoto.trocaPilha();//aqui executa por meio da classe mãe, pois é um método que vale pra toda classe, e não para um filho instaciado/individual
+console.log(ControleRemoto.soma(10,20));
+
+controle1.aumentarVolume();
+console.log(controle1);
 */
+
 
 

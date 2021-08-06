@@ -2307,6 +2307,20 @@ const filtrados = numeros.filter((valor,indice,array) => {//recebe como parametr
 console.log(filtrados);
 
 
+//FILTER PARA RETORNAR SOMENTE USUÁRIOS PREMIUM
+const users = [
+  { name: 'Ada Lovelace', premium: true },
+  { name: 'Grace Hopper', premium: false },
+  { name: 'Alan Turing', premium: true },
+  { name: 'Linus Torvalds', premium: false },
+  { name: 'Margaret Hamilton', premium: true }
+]
+
+const onlyPremium = users.filter(user => user.premium === true)//só os objetos que tem user.premiu true, vao ser retornados, pois o filter retorna tudo que é true pro novo array, o que é false ele ignora e vai pro próximo elemento
+
+console.log(onlyPremium);
+
+
 //FILTRANDO NOMES MAIORES QUE 5 LETRAS
 const pessoas = [
   {nome: 'Icaro',idade:19},
@@ -2376,6 +2390,26 @@ const dobrados = numeros.map((valor) => { //aqui recebe uma função de callback
   return `o dobro de ${valor} é ${valor * 2}` ;
 })
 console.log(dobrados);
+
+//USO DO MAP PRA ALTERAR UM ARRAY SEM MODIFICAR O ANTIGO, APLICAÇÃO REAL
+//gerando um novo array com produtos que tem preço maior que 30, retornar metade do preço sem mexer no array principal
+const products = [ //array principal
+  { name: 'Mouse Sem Fio', price: 30 },
+  { name: 'Pen Drive', price: 25 },
+  { name: 'Cartucho de Tinta', price: 50 },
+  { name: 'Suporte Ergonômico para Notebook', price: 23 },
+  { name: 'Repetidor de Sinal Wi-Fi', price: 44 }
+]
+
+//cria uma const pra poder mostrar no console e aplica o map no array principal, modificando ele apenas na const newProducts
+const newProducts = products.map((product) => { //aplica o map e recebe como parametro product no singular, esse product vai iterar(varrer, fazer um ciclo em cada objeto do array... passa pelo aanome mouse sem fio, passa pelo preço, e assim por todos os outros), nessa passagem, é executada uma arrow função que vai mexer nesses caras, ela vai ser apresentada abaixo:
+   if (product.price >= 30){ //aqui faz a checagem, se o preço durante cada passada por cada objeto for maior que 30, executa uma função
+     return {name:product.name,price:product.price / 2} //se o preço for maior que 30, um novo objeto com a chave nome vai ter o nome do produto que tá sendo iterado,isto é, está sendo passado e vai renomear o nome pro seu proprio nome, e o preço que é o q nos interessa vai ser preço / 2, que é a metade
+   }else{//se o preço do iterado não for maior ou igual a 30, o produto é retornado normalmente, sem modificações
+     return product;
+   }
+})
+console.log(newProducts);
 
 
 //MAP PRA RETORNAR APENAS UM DOS OBJETOS DO ARRAY
@@ -2530,6 +2564,31 @@ const older = pessoas.reduce((acumulador,valor) => {
 });
 
 console.log(older);
+
+
+//REDUCE PARA ACHAR A PONTUAÇÃO DE UM JOGAR DIANTE VÁRIAS PONTUAÇÕES EM DUAS FASES DO JOGO
+const phaseScores = [
+  { name: 'Vinicius Costa', score: 337 },
+  { name: 'Roger Melo', score: 43 },
+  { name: 'Alfredo Braga', score: 234 },
+  { name: 'Pedro H. Silva', score: 261 },
+  { name: 'Ana Paula Rocha', score: 491 },
+  { name: 'Vinicius Costa', score: 167 },
+  { name: 'Roger Melo', score: 137 },
+  { name: 'Alfredo Braga', score: 135 },
+  { name: 'Ana Paula Rocha', score: 359 },
+  { name: 'Pedro H. Silva', score: 133 }
+]
+//cria uma const pra gravar, f az um reduce no array principal... os parametros sao acumluados e pasheScore, pasheScore é a iterada em pashesSscore
+const rogerScore = phaseScores.reduce((acumulador,phaseScore) => {
+  if(phaseScore.name === 'Roger Melo'){ //procura só pelo roger melo e sua pontuação
+    acumulador = acumulador + Number(phaseScore.score) //deixa o acumulador acumular e soma o score do primeiro roger melo, e ddepois o segundo score do roger melo
+  }
+
+  return acumulador; //por fim, retorna o acumulador com o valor da pontuação tottal
+},0)//dá 0 como valor inicial ao acumulador
+
+console.log(rogerScore);
 
 
 
@@ -4428,6 +4487,4 @@ console.log(ControleRemoto.soma(10,20));
 controle1.aumentarVolume();
 console.log(controle1);
 */
-
-
 

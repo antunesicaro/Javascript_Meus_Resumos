@@ -4745,23 +4745,8 @@ if(cpf1.valida() === true){
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//validação de formulário:
+//validação de formulário com js puro:
+https://github.com/antunesicaro/Validacao_formulario_JS
 
 */
 

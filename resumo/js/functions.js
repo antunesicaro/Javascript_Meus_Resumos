@@ -4736,29 +4736,33 @@ if(cpf1.valida() === true){
   console.log('CPF inválido')
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//validação de formulário:
+
 */
 
-//###IMPORTANTE
-//valindao formulário 
 
-class ValidaFormulario{
-  constructor(){
-    this.formulario = document.querySelector('.formulario'); //seleciona pela classe formulario
-    this.eventos()//já chama o método eventos que foi criado
-  }
-
-  //cria o método eventos
-  eventos(){
-    //adiciona um envento à classe formulario
-    this.formulario.addEventListener('submit',(e) => { //captura o evento de submit, ao clicar no submit vai executar uma função... passa uma função arrow pra que o this não seja perdido 
-      this.handleSubmit(e); //passa o evento de submit para o método handleSubmit, que irá ser um método que recebe como parametro o evento de submit, ai lá nele podemos fazer ações com o evento
-    });
-  }
-
-  handleSubmit(e){ //recebe o evento como parametro do método eventos
-    e.preventDefault(); // previne o padrão que  é enviar o formulário... não queremos enviar, pois ainda temos que checar se está tudo de acordo, valida-lo
-    //console.log('nao enviou o form quando cliquei no enviar'); //mostra que previniu enviar o form, nao foi enviado pois cancelamos o envio com prevent default
-  }
-}
-
-const valida = new ValidaFormulario(); //executa o valida formulario, ai quando executar ele já vai de cara chamar o this.eventos, ai vai começar os eventos de validação

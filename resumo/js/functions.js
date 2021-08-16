@@ -4748,6 +4748,256 @@ if(cpf1.valida() === true){
 //validação de formulário com js puro:
 https://github.com/antunesicaro/Validacao_formulario_JS
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//JAVASCRIPT ASSINCRONO
+//PROMISES
+//cria uma função pra ceder um número aleatorio
+function rand(min,max){//vai receber um minimo e um maximo que é o tempo pra q seja realizada a acao de mostrar na tela uma mensagem
+  min = min * 1000;//multiplica por 1000 para que torne milisegundo
+  max = max * 1000;
+return Math.floor(Math.random() * (max - min) + min) //vai retornar um número aleatório entre os números minimos e máximos que vão ser recebidos por parametro
+}
+
+//realizar uma função que vai demorar um tempo a ser realizada quando for entrar no sistema, exemplo:
+function esperaAi(msg,tempo){
+  setTimeout(() => {
+    console.log(msg);
+  },tempo);
+}
+
+//concordamos que vai sair na ordem aleatória, pois o tempo é aleat´rio... 
+//pra que sair na ordem, primeiro a 1, depois a 2 e depois a 3, podemos fazer 'promises'
+esperaAi('opa,tudobem?1',rand(1,3)); //envia como argumento pra função esperaAi a mensagem e o tempo, sendo que o tempo é um método rand que é uma função que gera números aleotarios entre 1000 e 3000 milisegundos
+esperaAi('opa,tudobem?2',rand(1,3));
+esperaAi('opa,tudobem?3',rand(1,3));
+
+
+
+//USANDO CALLBACK PRA SUBSTITUIR PROMISES(MÉTODO ANTIGO DE SE ORDENAR TAREFAS EM TEMPO DE EXECUÇÃO)
+//cria uma função pra ceder um número aleatorio
+function rand(min,max){//vai receber um minimo e um maximo que é o tempo pra q seja realizada a acao de mostrar na tela uma mensagem
+  min = min * 1000;//multiplica por 1000 para que torne milisegundo
+  max = max * 1000;
+return Math.floor(Math.random() * (max - min) + min) //vai retornar um número aleatório entre os números minimos e máximos que vão ser recebidos por parametro
+}
+
+//realizar uma função que vai demorar um tempo a ser realizada quando for entrar no sistema, exemplo:
+function esperaAi(msg,tempo,cb){
+  setTimeout(() => {
+    console.log(msg);
+    if(cb) cb(); //obs: cb é uma função...se existe cb, executa... dai vai pro cb q é o function que contém um comando... ai isso que faz ficar organizado
+  },tempo);
+}
+
+
+
+esperaAi('opa,tudobem?1',rand(1,3),function(){
+  esperaAi('opa,tudobem?2',rand(1,3),function(){
+    esperaAi('3',rand(1,3));
+  })
+}); 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//PROMISES, ACEITANDO E REJEITANDO-AS
+function rand(min,max){//vai receber um minimo e um maximo que é o tempo pra q seja realizada a acao de mostrar na tela uma mensagem
+  min = min * 1000;//multiplica por 1000 para que torne milisegundo
+  max = max * 1000;
+return Math.floor(Math.random() * (max - min) + min) //vai retornar um número aleatório entre os números minimos e máximos que vão ser recebidos por parametro
+}
+
+//realizar uma função que vai demorar um tempo a ser realizada quando for entrar no sistema, exemplo:
+//temos que envolver ela dentro de uma promise
+function esperaAi(msg,tempo,){
+  return new Promise((resolve,reject) => { //retorna uma promise 'pai' a qual possui dentro dela uma arrow function com parametros resolve e reject, que basicamente serão escolhidos por nós desenvolvedores, o resolve diz 'olha, o código executou com sucesso, entao resolve ele' ... já o reject é 'olha, deu um erro aqui no código, rejeita ele e lança um erro' 
+    //o setTimeout é a solução, que vai dar tudo certo nos tempos, logo ele vai ser o resolve
+    setTimeout(() => {
+      if(typeof msg !== 'string') reject('algum tipo de erro como BAD VALUE');// o reject é usado pra mandar um erro pro catch()... esse método catch 'cata', recebe como parametro um erro e o trata no final da promise ou no momento em que foi lançado... obs: aqui podemos lançar um new Error('ERRO TAL') também
+
+      //como esse resolve, resolve e manda um dado, esse dado vai para o parametro do then()
+      resolve(msg);//usamos o resolve aqui dentro, ele vai passar como parametro a mensagem
+    },tempo);
+
+
+  })
+
+}
+
+
+esperaAi('mensagem 1 passada',rand(1,3)) //primeiro chama a função espera ai e passa uma mensagem e um tempo pra ela, a mensagem já está sendo passada por escrito, e o tempo vai pra função rand pra ter um numero aleatorio entre 1000 e 3000 milisegundos
+.then(msgVindaDoResolve => { //then vai receber uma função
+  console.log(msgVindaDoResolve); //o parametro da função é a mensagem vinda do reolve
+  return esperaAi('mesangem 2 passada',rand(1,3)); //aqui na funcao, podemos ter o retorno de outra funcao, ou seja, de outra promisse, ai vai dando ordem de execução para as funções
+}).then(msg2VindaDoResolve => { //posso fazer cadeias de promises com then... signifca que primeiro uma função executada, depois outra,depois outra... e assim sucessivamente
+  //console.log(msg2VindaDoResolve);
+  return msg2VindaDoResolve + 'modificada em um then e mostrada no outro'; //posso retornar essa resposta também ao invés de mostra-la aqui, e mostra-la só no outro then ja com alguma alteracao feita aqui... para fazer outra coisa com ela
+}).then(msgCapturada => {
+  console.log(msgCapturada) //o msg capturada é o que vai vir do return, a concateanação do 'vai pro outro then', o que nos mostra que podemos pegar o valor e manipula-lo
+  return esperaAi(12345678,rand(1,3));
+}).then(msgVindaDoReturn => {//then recebe uma funcao
+  console.log(msgVindaDoReturn) //parametro dessa funcao é a mensagem que vem do return
+  return esperaAi('pronto, agora temos ordem!',rand(1,3)); //retorno de uma promisse, mas pra ser mostrada precisamos fazer algo com ela, e fazemos algo com ela usando o then
+}).then(msgFinal => {
+  console.log(msgFinal);
+}).catch((erroVindoDoReject) => {//o método catch 'cata' o erro quando uma promise é rejeitada, e o recebe como parametro, podendo fazer oq quiser aqui com ele, até mesmo mostrar
+  console.log('ERROR:', erroVindoDoReject);
+})
+
+console.log('vai ser exibido antes da promise');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//PROMISE.ALL, passa um array com promises ou valores ja resolvidos e vai  nos entregar uma promise com o valor dentro de um array
+//QUANDO QUEREMOS RESOLVER TODAS AS PROMESSAS E TRAZER OS VALORES DE VOLTA PARA TRATAR
+
+function rand(min,max){
+  min = min * 1000;
+  max = max * 1000;
+return Math.floor(Math.random() * (max - min) + min);
+}
+
+
+function esperaAi(msg,tempo,){
+  return new Promise((resolve,reject) => { 
+   
+    setTimeout(() => {
+      if(typeof msg !== 'string') reject(false);
+      resolve(msg);
+    },tempo);
+  })
+}
+//criando um array com promises que vão ser mandadas
+
+//array precisa ser executado e retornar todos os valores que tem pra a gente tratar
+//primeiro valor já não era uma promise, então logo é entregue resolvido pois está na ordem
+const promises = ['Primeiro valor', //a const promises aqui é um array que pode ter promises(promessas em ordem) e valores
+esperaAi('Promise 1',3000),
+esperaAi('Promise 2',500),
+esperaAi('Promise 3',1000),
+'Outro valor'
+];
+
+
+Promise.all(promises)//Promise.all(promises) significa resolva todas as promises(da const promises) e retorna pro then os valores por meio de uma funcao
+.then(function(valor){ //executa a funcao que resolve vem lá do constructor new Promise
+  console.log(valor);
+}).catch(function(erro){ //caso tenha erro, executa a função de erro que vem lá do constructor new Promise
+  console.log(erro);
+})
+
+
+
 */
 
+//PROMISE.RACE é como se fosse uma corrida mesmo
+//quando queremos entregar várias promessas, e a primeira que resolver o valor vai ser entregue
 
+
+
+function rand(min,max){
+  min = min * 1000;
+  max = max * 1000;
+return Math.floor(Math.random() * (max - min) + min);
+}
+
+
+function esperaAi(msg,tempo,){
+  return new Promise((resolve,reject) => { 
+    if(typeof msg !== 'string') {
+      reject('CAIU NO ERRO'); //quando houver erro, vai mandar por parametro essa mensagem pro parametro do catch
+      return;//se achar o erro, para de executar
+    }
+
+    setTimeout(() => {
+      resolve(msg);
+      return;
+    },tempo);
+  })
+}
+//criando um array com promises que vão ser mandadas
+
+//array precisa ser executado e retornar todos os valores que tem pra a gente tratar
+//primeiro valor já não era uma promise, então logo é entregue resolvido pois está na ordem
+const promises = ['Primeiro valor', //a const promises aqui é um array que pode ter promises(promessas em ordem) e valores
+esperaAi('Promise 1',3000),
+esperaAi('Promise 2',500),
+esperaAi('Promise 3',1000),
+esperaAi(1231,1000), //aqui é um erro pois só estamos aceitando strings
+'Outro valor'
+];
+
+
+Promise.all(promises)//Promise.all(promises) significa resolva todas as promises(da const promises) e retorna pro then os valores por meio de uma funcao
+.then(function(valor){ //executa a funcao que resolve vem lá do constructor new Promise
+  console.log(valor);
+}).catch(function(erro){ //caso tenha erro, executa a função de erro que vem lá do constructor new Promise
+  console.log(erro);
+})

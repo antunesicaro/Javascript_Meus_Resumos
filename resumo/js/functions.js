@@ -4955,12 +4955,28 @@ Promise.all(promises)//Promise.all(promises) significa resolva todas as promises
 
 
 
-*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //PROMISE.RACE é como se fosse uma corrida mesmo
 //quando queremos entregar várias promessas, e a primeira que resolver o valor vai ser entregue
-
-
 
 function rand(min,max){
   min = min * 1000;
@@ -4987,17 +5003,60 @@ function esperaAi(msg,tempo,){
 //array precisa ser executado e retornar todos os valores que tem pra a gente tratar
 //primeiro valor já não era uma promise, então logo é entregue resolvido pois está na ordem
 const promises = ['Primeiro valor', //a const promises aqui é um array que pode ter promises(promessas em ordem) e valores
-esperaAi('Promise 1',3000),
-esperaAi('Promise 2',500),
-esperaAi('Promise 3',1000),
-esperaAi(1231,1000), //aqui é um erro pois só estamos aceitando strings
+esperaAi('Promise 1',rand(1,3)),
+esperaAi('Promise 2',rand(1,3)),
+esperaAi('Promise 3',rand(1,3)),
+//esperaAi(1231,1000), //aqui é um erro pois só estamos aceitando strings
 'Outro valor'
 ];
 
 
-Promise.all(promises)//Promise.all(promises) significa resolva todas as promises(da const promises) e retorna pro then os valores por meio de uma funcao
+Promise.race(promises)//Promise.race(promises) significa 'o que for resolvido primeiro, você me entrega,não importando se seja promise ou não'
 .then(function(valor){ //executa a funcao que resolve vem lá do constructor new Promise
   console.log(valor);
 }).catch(function(erro){ //caso tenha erro, executa a função de erro que vem lá do constructor new Promise
   console.log(erro);
 })
+
+*/
+
+//promise.resolve é uma funcao que retorna uma promessa
+//promise.reject também é uma função, mas ao invés de cair no then que resolve, vai pro catch que é o erro
+
+
+function rand(min,max){
+  min = min * 1000;
+  max = max * 1000;
+return Math.floor(Math.random() * (max - min) + min);
+}
+
+
+function esperaAi(msg,tempo,){
+  return new Promise((resolve,reject) => { 
+    if(typeof msg !== 'string') {
+      reject('CAIU NO ERRO'); //quando houver erro, vai mandar por parametro essa mensagem pro parametro do catch
+      return;//se achar o erro, para de executar
+    }
+
+    setTimeout(() => {
+      resolve(msg);
+      return;
+    },tempo);
+  })
+}
+
+//exemplo de uma funcao que irá retornar uma promise
+function baixaPagina(){
+  const emCache = false; //simulando uma flag pra um cache de pagina verdadeiro
+
+  if(emCache){//se tiver em cache, entrega uma promessa resolvida
+    return Promise.resolve('Página em cache');
+  }else{//se nao tiver em cache, entrega uma promise também, mas que ainda será resolvida
+    return esperaAi('Baixei a página',3000); 
+  }
+}
+
+baixaPagina()
+.then(dadosRecebidos => {
+  console.log(dadosRecebidos)
+}).catch(erroRecebido => console.log(erroRecebido));

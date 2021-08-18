@@ -5018,8 +5018,19 @@ Promise.race(promises)//Promise.race(promises) significa 'o que for resolvido pr
   console.log(erro);
 })
 
-*/
 
+
+
+
+
+
+
+
+
+
+
+
+//PROMEISE.RESOLVE E PROMISE.REJECT
 //promise.resolve é uma funcao que retorna uma promessa
 //promise.reject também é uma função, mas ao invés de cair no then que resolve, vai pro catch que é o erro
 
@@ -5060,3 +5071,122 @@ baixaPagina()
 .then(dadosRecebidos => {
   console.log(dadosRecebidos)
 }).catch(erroRecebido => console.log(erroRecebido));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//RECAPITULANDO PROMISE PARA ENTENDER MELHOR ASSYNC E AWAIT
+//ASSYNC E AWAIT
+//executar código sequencial de maneira organizada, complemento de promises
+
+
+//promise.resolve é uma funcao que retorna uma promessa
+//promise.reject também é uma função, mas ao invés de cair no then que resolve, vai pro catch que é o erro
+
+
+
+function rand(min = 1,max = 3){
+  min = min * 1000;
+  max = max * 1000;
+return Math.floor(Math.random() * (max - min) + min);
+}
+
+
+function esperaAi(msg,tempo,){ //funcao esperaAi() vai retornar um promise
+  return new Promise((resolve,reject) => { 
+    setTimeout(() => {
+      if(typeof msg !== 'string') {
+        reject('CAIU NO ERRO'); //quando houver erro, vai mandar por parametro essa mensagem pro parametro do catch
+        return;//se achar o erro, para de executar
+      }
+
+      resolve(msg.toUpperCase() + ' - Passei na promise');
+      return;
+    },tempo);
+  });
+}
+
+esperaAi('Fase 1', rand())//manda pro function principal esperaAi() como argumento, lá ela vai transforma isso q foi mandado em possiveis tipos de solucao : se for aceito, vai retornar um resolve que transforma essa msg em msg com letras grandes concatenado com uma mensagem, se for reject(rejeitado) retorna pro catch um erro
+.then((msgVindaDoResolve) => {
+  console.log(msgVindaDoResolve);
+  //se eu quiser retornar uma outra promise aqui pra fazer outra coisa depois dessa, tenho que dar um return em uma pormise aqui tb, depois de ter executado o que eu queria(tratar dados)
+  return esperaAi('Fase 2',rand());//do return vai pro esperaAi() fazer tudas transformações lá
+}).then((valorDoReturnTratadoNoEsperaAi) =>{ //veio do resolve, que ganhou um valor de uma promise de um return da anterior que mandou pro esperaAi e o resolve do esperaAi mandou pro then daqui
+  console.log(valorDoReturnTratadoNoEsperaAi);
+}).catch(erro => {
+  console.log(erro);
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*/
+
+//USANDO  ASYNC E AWAIT COMO SE FOSSE SINCRONO PARA EXECUTAR UM DE CADA VEZ, EM ORDEM
+
+function rand(min = 1,max = 3){
+  min = min * 1000;
+  max = max * 1000;
+return Math.floor(Math.random() * (max - min) + min);
+}
+
+
+function esperaAi(msg,tempo,){ //funcao esperaAi() vai retornar um promise
+  return new Promise((resolve,reject) => { 
+    setTimeout(() => {
+      if(typeof msg !== 'string') {
+        reject('CAIU NO ERRO'); //quando houver erro, vai mandar por parametro essa mensagem pro parametro do catch
+        return;//se achar o erro, para de executar
+      }
+
+      resolve(msg.toUpperCase() + ' - Passei na promise');
+      return;
+    },tempo);
+  });
+}
+
+
+async function executa(){ //cria uma função com async na frente, ai desbloqueia o await para usar no escopo da função
+ //para tratar o erro, vamos fazer um try e catch... try pra tentar executar tudo, se der tudo certo, ok, lindo!, no entanto, se der errado, capturamos o erro no catch(e), que vai vir do reject como parametro
+ try{
+   //sucesso vem do resolve do esperaAi()
+  const fase1 = await esperaAi('Fase 1',rand()); //salva numa variavel e depois a mostra, usando o await para dar ordem na execao de funoes, 'olha, espera executar essa , depois dessa faz outra, etc assim por diante
+  console.log(fase1);
+  //obs importante: se eu não usar o await, ou não usar um then pra promise, ela vai ficar pending, isto é, uma promise pendente de resposta se deu sucesso ou rejeição
+  const fase2 = await esperaAi('Fase 2',rand());
+  console.log(fase2);
+  const fase3 = await esperaAi('Fase 3',rand());
+  console.log(fase3);
+ 
+  console.log('Terminou aqui')
+
+ }catch(erroVindoDoReject){ //se der erro, o reject manda esse erro pra cá como argumentos e podemos trata-lo
+  console.log(erroVindoDoReject);
+ }
+
+}
+
+executa();

@@ -1135,6 +1135,22 @@ mostraArgumento('valor',1,2,30); //passa argumento pra função mostraArgumento
 
 
 
+//mostrando cor por meio de função, mas se não tiver disponível a cor, diz o nome dela e o não está dispoível
+function corFavorita(cor){ //recebe da execução o parametro 'verd' e fica salvo ele em cor
+  if(cor === 'verde'){
+    console.log('eu gosto de mato');
+  }else{
+    console.log(`'${cor}' não é uma cor disponível`);
+  }
+}
+
+corFavorita('verd');
+
+
+
+
+
+
 
 
 
@@ -5143,8 +5159,6 @@ esperaAi('Fase 1', rand())//manda pro function principal esperaAi() como argumen
 
 
 
-*/
-
 //USANDO  ASYNC E AWAIT COMO SE FOSSE SINCRONO PARA EXECUTAR UM DE CADA VEZ, EM ORDEM
 
 function rand(min = 1,max = 3){
@@ -5190,3 +5204,704 @@ async function executa(){ //cria uma função com async na frente, ai desbloquei
 }
 
 executa();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//manipulção do DOM
+//diferença entre NodeList e HTMLColection
+
+const primeiraUl = document.querySelector('ul'); //seleciono a primeira ul do site
+const gridSectionHTML = document.getElementsByClassName('grid-section');//pego o gridsection com htmlColection (quando se usa getbyclassname, getbyid)
+const gridSectionNode = document.querySelectorAll('.grid-section');//pego o gridsection com NodeList(quando se usa o querySelector)
+
+primeiraUl.classList.add('grid-section');//adiciona uma classe para essa nossa ul que estava sem classe nenhuma
+
+console.log(gridSectionHTML); //como foi adicionado uma nova classe gridsection, ela aparece aqui
+console.log(gridSectionNode); //se mantém, mesmo criando uma nova classe com gridsection, ela não aparece aqui
+
+//obs: outra diferença é que existem métodos que não existem em um, não existem em outro, como o forEach para looping
+
+gridSectionNode.forEach(function(item,index){ //parametro do forEach é uma function que recebe como primeiro parametro o item, que nesse caso é cada todos elementos que possuem a classe grid-section,o segundo argumento é o index
+  console.log(item,index);
+})
+
+//obs2: como o hmtlcoletion n tem como, dai pra fazer o forEacho precisamos transformar ele em um array com array.from
+
+const arrayGrid = Array.from(gridSectionHTML);
+arrayGrid.forEach(function(item,index){
+  console.log(item,index)
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//pegando imagens do site pelo loop forEach
+const imgs = document.querySelectorAll('img');//pega todas img
+imgs.forEach(function(item,index,array){
+  console.log(item)
+})
+
+
+
+
+
+
+
+//retornando apenas imagens que começam com child.. aqui é importante saber que o 'começar com' precisa usar o ^, tá dentro da pasta img e queremos que o seletor seja o img src
+const onlyWordImg = document.querySelectorAll('img[src^="img/child"]');
+console.log(onlyWordImg);
+
+
+
+
+
+
+
+//passando links internos que começam com #
+const allLinksIn = document.querySelectorAll('a[href^="#"]')
+console.log(allLinksIn);
+
+
+
+
+
+
+//selecionando o primeiro h2 de uma section
+const h2OfDesc = document.querySelector('.descricao-fotos h2')
+console.log(h2OfDesc);
+
+
+
+
+
+//selecionando o ultimo p do site
+
+const paragrafos = document.querySelectorAll('p');
+console.log(paragrafos[--paragrafos.length]);
+
+
+
+
+
+
+
+//pegando todos paragrafos do site e os mostrando com o forEach looping e arrow function
+const paragrafos = document.querySelectorAll('p'); //pega todos paragrafos
+paragrafos.forEach((paragrafo) => console.log(paragrafo.innerHTML)) //usa o método forEach para mostrar
+
+
+
+
+
+
+
+
+
+//mexendo com classes, adicionando classe à um elemento(nesse caso é o menu)
+const menu = document.querySelector('.menu');
+
+menu.classList.add('novaClasse')
+
+if(menu.classList.contains('novaClasse')){ //se existir(contain) a classe escrita, faça algo, se nao, faça outra coisa
+  menu.classList.add('novaDaNova')
+}else{
+  menu.classList.add('casoNTenha');
+}
+
+console.log(menu.classList)
+
+
+
+
+
+
+
+
+
+//usando o attributes que é um array like que diz todos atributos que existem, como classe, id,data, etc... vai na ordem que a gente escolheu na hora de fazer o html
+const we = document.querySelector('.we');
+
+console.log(we.attributes);
+console.log(we.attributes[1]); //como é um arraylike, pode-se pegar os indices dos atributos
+console.log(we.attributes.id); //pode retornar assim também, direto com o atributo que queremos
+
+
+
+
+
+
+
+
+
+
+
+//método(função) getAttribute e setAttribute
+// attribute é readOnly, ou seja, não podemos modificar dando um = nela
+const img1 = document.querySelector('img');//seleciona primeira img
+
+const altImg = img1.getAttribute('alt'); //pegando o texto alternativo para pessoas com problema de visão e botando numa variavel, posso fazer isso tb com outras variáveis
+console.log(altImg);
+
+img1.setAttribute('id', 'primeira-img') //cria novo atributo pra img1
+console.log(img1.attributes)
+
+console.log(img1.getAttribute('src'),); //get pra pegar o src, poderia pegar outras coisas  também como classes, id, data, etc
+
+const possuiAlt = img1.hasAttribute('alt'); //hasAtribbute vê se tem ou nao tem esse atributo no elemento, retorna true ou false dependendo da resposta
+console.log(possuiAlt);//true se tiver, false se nao tiver
+
+
+
+
+
+
+
+
+
+
+//adicionando em todos itens do menu(nos a ou poderia ser na li tb) a classe ativo
+const itensMenu = document.querySelectorAll('.menu a');
+
+itensMenu.forEach((item) => {
+  item.classList.add('ativo');
+})
+
+//removendo  todos os ativos e deixando apenas o primeiro
+itensMenu.forEach((item) => {
+  item.classList.remove('ativo');
+})
+
+itensMenu[0].classList.add('ativo');//adiciona só no primeiro item do menu a classe ativo
+
+
+
+console.log(itensMenu);
+
+
+
+
+
+
+
+//modificando href do link externo do menu
+const aMenu = document.querySelector('a[href^="#copy"]'); //seleciona o a do menu que tem esse link em específico
+
+aMenu.setAttribute('href', 'https://www.google.com/') //modifca o atributo href dele com o método setAttribute
+
+console.log(aMenu.href)
+
+
+
+
+
+
+
+
+
+
+
+//medirores de distância entre elementos
+const nossasFotos = document.querySelector('.fotos-nossas');//seleciona a ul com as fotos
+
+const heightDasFotos = nossasFotos.scrollHeight;//mostra a altura total incluido o scroll
+//obs: tb temos . clientHeight que mostra a altura + o padding e offSetHeight que é altura + borda + padding
+
+//obs: também podemos selecionar a distancia do elemtno selecionado até o topo da página:
+const fotosTopo = nossasFotos.offsetTop; //aqui tb tem o offsetLeft que distancia em relaçao a esquerda
+
+
+console.log(heightDasFotos,fotosTopo); 
+
+
+
+
+
+
+
+
+
+
+
+
+//método getBoudingClientRect, que cria um retangulo englobando o elemento que selecionamos e retorna as distancias 
+const primeiroH2 = document.querySelector('h2');
+const rectPrimeiroH2 = primeiroH2.getBoundingClientRect();//ativa o método para o elemento selecionado
+console.log(rectPrimeiroH2,rectPrimeiroH2.left); //retorna e mostra todas distancias, seja,x,y,top,bottom... etc.. 
+
+
+
+
+
+
+
+
+
+//Window
+console.log(
+  window.innerWidth, // vê o tamanho da tela do usuário
+  window.outerWidth, //vê o tamanho não só do windown geral, mas se o console tiver aberto por exemplo, vê também esse width
+  window.pageYOffset //vê o quanto teve de scroll no eixo Y... dá pra fazer uns efeitos aqui, por exemplo, quando o usuário rolar até tal ponto do eixo y, faça alguma ação
+)
+
+
+
+
+
+
+
+
+
+
+
+
+//método matchMedia()... é como se fosse o media querie do css
+const maximo600px = window.matchMedia('(max-width: 600px)');
+
+if(maximo600px.matches){
+  console.log('matches tá true ainda pois não passou de 600px, então tá "batendo", tá dando match')
+}else{
+  console.log('passou de 600, nao deu match mais');
+}
+
+console.log(maximo600px);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//somando a largura de todas imagens que tem no site
+function somaImagens(){
+  const imgs = document.querySelectorAll('img');
+
+  let soma = 0;
+  imgs.forEach((img) => {
+    soma = soma + img.offsetWidth; //ideal sempre usar esse pois se a imagem tiver borda, o offsetWidth também contabiliza
+   
+  })
+
+  console.log(soma);
+  
+}
+//só executa a função depois que o site estiver carregado
+window.onload = function(){
+  somaImagens();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//checando se links tem 48px por 48px que é o recomendado pro dedo clicar melhor de acordo com google
+
+const links = document.querySelectorAll('a')
+
+links.forEach((link) => {
+  const linkWidth = link.offsetWidth;
+  const linkHeight = link.offsetHeight;
+
+  if(linkWidth >= 48 && linkHeight >= 48){
+    console.log('tá ok');
+  }else{
+    console.log('n ta ok')
+  }
+})
+
+
+
+
+
+
+
+
+//eventos
+
+//obs: o this pegado pelo dom sempre irá referenciar o elemento selecionado, por isso se iguala ao currentTarget
+const img1 = document.querySelector('img');
+
+function callback(event){ //o callback tem como parametro o event, que é basicamente o evento e suas informações...passo a funcao de callback aqui pra executar no event listener quando houver o evento dito no parametro de lá
+  //temos como propriedades do event:
+  const currentTarget = event.currentTarget;//alvo atual clicado(this)... no caso esse this é da primeira img, mas caso tivessemos selecionado a lista toda de imagens, quando clicasse em cada uma esse currentTarget seria o mesmo this, que é o this da lista selecionada, diferentemento do target normal, que é o que for clicado aparecerecia, se clicasse na img1, apareceria ela, img2, apareceia img2... etc
+  const target = event.target; //onde foi exatamente clicado
+  //tem o .type que retorna o tipo de evento como click, scroll
+  //preventDefault: previne o padrão do navegador
+
+  
+  console.log('acao',currentTarget,target); 
+}
+
+img1.addEventListener('click',callback);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//eventos js
+//obs: o addEventListener é somente para um elemento, se quiser fazer com mais terá q usar forEach
+function callback(event){
+  //aqui diz se o evento keydown que  é pressionar for a letra a, muda a classe pra azul, se ja tiver no azul e for pressionado ai remove, pois isso eh o q toggle faz, se n tiver bota, se tiver tira... pode fazer muitos efeitos com isso!
+  if(event.key === 'ç'){
+    document.body.classList.toggle('azul')
+  }else if(event.key === 'z'){
+    document.body.classList.toggle('vermelho')
+  }else if(event.key === 'v'){ //vanguart
+    console.log('vai tocar a musica');
+    
+    //geralmente aqui é posto uma classe, ai estiliza essa classe no css.. usa o togle pra sempre ter como fazer efeito de tirar e botar
+  }
+
+  console.log(event.key);
+}
+
+
+window.addEventListener('keydown',callback);//quando pressionar um tecla, vai acionar a função callback, e lá nela algo vai ser executado
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//forEach e eventos
+const imgs = document.querySelectorAll('img');//seleciona todas imgs
+
+function callback(e){
+  console.log(e.target)
+}
+
+imgs.forEach((img) => {//da um loop por todas imagens selecionadas
+  img.addEventListener('click',callback)//usa em cada uma delas o addEventListener, quando clicar vai ser executado a funcao chamada callback
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//quando clicar, remove classe de um elemento e adiciona em outro
+const linksInternos = document.querySelectorAll('a[href^="#"]');//pega todos links internos
+
+function adicionaAtivo(event){
+  event.preventDefault(); //previe o padrao para nao ficar dando scroll 
+  
+  linksInternos.forEach((linkInterno) => { //primeiro remove de todos os itens o ativo
+    linkInterno.classList.remove('ativo')
+  })
+  
+  event.currentTarget.classList.add('ativo') //deppis adiciona o ativo ao item clicado, ai quando eu clicar em outro vai primeiro remover e depois adicioanr à esse que foi clicado
+
+}
+
+linksInternos.forEach((linkInterno) => { //loop por cada link interno
+  linkInterno.addEventListener('click',adicionaAtivo); //quando clicar em um dois links internos vai executar a funcao adicionaAtivo, que irá adicionar uma classe ativo ao a clicado
+
+})
+
+
+
+
+
+
+
+
+
+
+
+//removendo quando se clica em qualquer elemento da tela
+
+const allElements = document.querySelectorAll('body *'); //selecionando todos elementos
+
+function mostraElemento(e){
+  e.preventDefault();
+
+  e.target.remove();
+}
+
+
+allElements.forEach((elemento) => {
+  elemento.addEventListener('click', mostraElemento);
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//adicionando evento de quando pressionar alguma tecla, algo ocorrer
+function aumentaFonte(e){
+  if(e.key === 't'){
+    //pra falar com html é documet.documentElement e com body é document.body
+   const html = document.documentElement; //selecionando o html geral
+   html.classList.toggle('textoMaior');
+  }
+}
+
+window.addEventListener('keydown',aumentaFonte);
+
+
+
+
+
+
+
+//outer,inner html , text
+const menu = document.querySelector('.menu');
+console.log(menu.outerHTML);//trás todo o html, tudo o que tá escrito... incluindo div e class pai
+console.log(menu.innerHTML);//trás todo o html interno do elemento, sem oq engloba por exemplo
+console.log(menu.innerText);//elimina as tags.trás o texto em si dos elementos, no caso do menu trás as opçoes de clique do menu, 
+//innerHTML vs outerHTML
+//o inner vem literalemte só o texto que tá dentro da tag, já o outer vem tudo incluindo a tag como <p>, <class> etc..
+//obs: podemos modificar menu.innerHTML = 'Mudei';
+
+
+
+
+
+
+
+
+
+
+//transversing, navegação pelo DOM
+//checando os pais de elemento, filhos,por meio de propriedades
+//parentElement
+const listaFotosNossas = document.querySelector('.fotos-nossas');
+const paiListaFotosNossas = listaFotosNossas.parentElement;
+console.log(paiListaFotosNossas); //pode ir indo até body,html, windon, vai indo pelos pais que englobam os filhos
+
+
+
+
+
+
+//next/previousElementSibling ... sibliing significa irmandade, entao dentro do pai, procura o anterior ou o proximo elemento que pertence ao mesmo pai que o atual selecionado
+const listaFotosNossas = document.querySelector('.fotos-nossas');
+const paiListaFotosNossas = listaFotosNossas.parentElement;
+console.log(paiListaFotosNossas.nextElementSibling); 
+
+
+
+
+
+
+
+
+
+
+//selecionando o ultimo elemento de uma lista com array
+//children
+const listaFotosNossas = document.querySelector('.fotos-nossas');
+
+const filhos = listaFotosNossas.children; //retorna os filhos em um htmlcolection
+
+const ultimoFilho = filhos[filhos.length - 1];
+console.log(ultimoFilho); //primeiro mostra o ultimo filho aaqui por meio de arraylike
+
+const arrayFilhos = Array.from(filhos); //se quisermos entrar pra ver todos o filhos, que no caso são os li que são filhas da ul, precisamos transformar o htmlcolection em nodelist, pra poder ter o método forEach de looping disponível
+
+arrayFilhos.forEach((filho) => {//varrendo cada li(filho do pai ul)
+  console.log(filho);
+  
+})
+
+
+//selecionando o ultimo elemento de uma lista com last-child
+const fotosNossas = document.querySelector('.fotos-nossas');
+const lastChildOfFotosNossas = fotosNossas.querySelector('li:last-child')
+
+console.log(fotosNossas);//mostra a ul(fotos-nossas) toda selecionada
+console.log(lastChildOfFotosNossas);//pega dentro da ul, a ultima filha(last-child)
+
+
+
+
+//Element vs Node
+//element é uma tag html, já o node pode ser um texto, pode ser tudo
+
+
+
+//childNodes é uma propriedade que retorna tudo que é filho do elemento que selecionamos, nesse caso da ul.. porém não se resume apenas à li´s, e sim tudo do html, até mesmo os espaçoes que deixamos nas marcações, comentários, etc
+const ulFotos = document.querySelector('.fotos-nossas');
+console.log(ulFotos.childNodes);
+
+
+
+
+//movendo elementos por meio do DOM
+//appendChild
+const ulFotos = document.querySelector('.fotos-nossas');
+const motivos = document.querySelector('.motivos');
+const h1Motivos = motivos.querySelector('h1');
+//quero levar o h1 dos motivos para ser parte da ulFotos,para isso:
+ulFotos.appendChild(h1Motivos); //append é grudar no final o elemento selecinado e o tornar filho do pai que foi selecionado
+
+
+
+//insertBefore
+//obs: para de fato funcionar, o segundo parametro precisa ser filho do pai, ou seja, h1Motivos precisa ser filho de motivos
+const ulFotos = document.querySelector('.fotos-nossas');
+const motivos = document.querySelector('.motivos');
+const h1Motivos = motivos.querySelector('h1');
+//inserindo a lista de fotos na posição antes do h1motivos, isso tudo dentro do pai motivos
+motivos.insertBefore(ulFotos,h1Motivos)//o insert before é pra botar um elemento dentro do pai motivos, mas como segundo parametro eu preciso de um filho desse pai para ter como referencia de onde o primeiro parametro(que nesse caso é a lista de fotos nossas) vai entrar(no caso o primeiro parametro vai entrar antes do segundo em relação ao posicionamento, por isso o inserir antes(insert before))
+
+
+
+
+
+
+//remove child e replace child
+const ulFotos = document.querySelector('.fotos-nossas');
+const motivos = document.querySelector('.motivos');
+const sorry = document.querySelector('.sorry');
+const h1Motivos = motivos.querySelector('h1');
+
+//motivos.insertBefore(ulFotos,h1Motivos)//o insert before é pra botar um elemento dentro do pai motivos, mas como segundo parametro eu preciso de um filho desse pai para ter como referencia de onde o primeiro parametro(que nesse caso é a lista de fotos nossas) vai entrar(no caso o primeiro parametro vai entrar antes do segundo em relação ao posicionamento, por isso o inserir antes(insert before))
+//motivos.removeChild(ulFotos);//remove oq acabamos de fazer
+//motivos.replaceChild(sorry,h1Motivos)
+
+
+
+
+
+
+//criando novo elemento com createElement e adicionando à um local com appendChild
+const sorry = document.querySelector('.sorry');
+const novoh1 = document.createElement('h1');
+novoh1.innerText = 'Novo h1 criado e texto colocado';
+novoh1.classList.add('novoTitulo')
+
+sorry.appendChild(novoh1);
+
+
+
+
+//clonando o menu e botando ele em outro lugar
+const menu = document.querySelector('.menu');
+const sorry = document.querySelector('.sorry');
+const menuDuplicado = menu.cloneNode(true);
+
+sorry.appendChild(menuDuplicado);
+
+
+
+
+
+
+
+
+
+
+//substituido conteudo de copy por descricao fotos
+
+const descFotos = document.querySelector('.descricao-fotos');
+const copy = document.querySelector('.copy');
+copy.innerHTML = descFotos.innerHTML;
+
+
+
+*/

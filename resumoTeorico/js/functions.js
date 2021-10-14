@@ -36,7 +36,7 @@ document.body.innerHTML += `Seu nome com letras minúsculas: ${nome.toLocaleLowe
 
 ---------------
 
-
+//Math
 const numero = Number(prompt("Digite um número"));
 const escolha = document.getElementById('numero-escolhido');
 const divTexto = document.getElementById('texto');
@@ -947,6 +947,29 @@ try{
 }
 
 ----
+
+
+
+
+
+
+
+//usamos o  Object.prototype.toString.call para checar de fato qual o type of, nunca usar o typeof pois ele é incompleto em array
+//typeof vs Object.prototype.toString.call(elemento)
+
+const li = document.querySelectorAll('li');
+console.log(Object.prototype.toString.call(li)); //retorna [object NodeList], pois é o q de fato ele é
+//e usasse somente o typeof(li) ia retornar somente object
+
+
+
+
+
+
+
+
+
+
 
 //lançar erro
 
@@ -2139,7 +2162,7 @@ console.log(nomes);
 
 
 
-//SHIFT REMOVE O PRIMEIRO, UNSHIFT ADICIONA UM NO INDICE 0 E DESLOCA TODOS OUTROS
+//SHIFT REMOVE O PRIMEIRO e retorna ele, UNSHIFT ADICIONA UM NO INDICE 0 E DESLOCA TODOS OUTROS,POP TIRA O ULTIMO ELEMENTO DO ARRAY E RETORNA ELE
 const nomes = ['icaro','gio','ramas'];
 nomes.shift();
 nomes.unshift('segundo icaro');
@@ -2147,7 +2170,7 @@ console.log(nomes);
 
 
 
-
+//REVERSE:inverte  a ordem do array e o retorna(o array modificado)
 
 
 
@@ -2175,7 +2198,10 @@ const nomes = ['icaro','gio','ramas','pedrao','tokya'];
 const nomesFatiados = nomes.slice(1,-2); //começa do 1 e corta  de trás pra frente dois
 console.log(nomesFatiados);
 
-
+//CLONANDO COM SLICE... importante clonar assim para que os arrays não fiquem ligados por ponteiros
+const nomes = ['icaro','gio','ramas','pedrao','tokya'];
+const nomesClonados = nomes.slice();//cria um novo array em que nada é cortado, cria a partir do retorno, tonarnado-os indeopendetes de ponteiros de memória
+console.log(nomesClonados)
 
 //TRANFORMANDO STRING EM ARRAY
 const nome = 'Icaro Silva Antunes';
@@ -2288,6 +2314,15 @@ console.log(a3);
 
 
 //FILTER : SEMPRE RETORNA A QUANTIADE IGUAL DE ELEMENTOS DO ARRAY OU MENOS
+//tilter retorna os true e elimina os false se eu der um return em um item iterado ex:
+const frutas = ['pera','maça',undefined,null,'banana','carro'];
+const arrayFrutas = frutas.filter((fruta) => {
+  return fruta; //retorna só oq é fruta, ou seja, só o está em aspas e é true... também retorna 'carro' pois ele é true
+})
+
+
+
+
 
 //FILTER: FUNÇÃO DE FILTRAR ARRAYS:
 const numeros = [1,2,3,5,10,7,30,40,12];
@@ -2399,7 +2434,8 @@ console.log(aNoFinal);
 
 
 
-//MAP = ALTERA VALORES DO ARRAY, PORÉM RECEBE O ARRAY COM MESMO TAMANHO
+//MAP = ALTERA VALORES DO ARRAY, PORÉM RECEBE O ARRAY COM MESMO TAMANHO E RETORNA O ARRAY POR MEIO DO RETURN(SE BOTAR DENTRO DE UMA CONST, RETORNA UM NOVO ARRAY SEM VINCULO ALGUM COM O ORIGINAL, ENTÃO O MAP SERVE TAMBÉM PRA PEGAR UM ARRAY EXSITENTE, ALTERA-LO SEM MUDAR O ORIGINAL)
+//SEMPRE TEM QUE TER O  RETURN, SE NÃO TIVER É PQ TEM UM RETORNO DE UMA SÓ LINHA
 
 //MAP DOBRANDO NÚMEROS
 const numeros = [1,2,3,5,10,7,30,40,12];
@@ -2607,6 +2643,61 @@ const rogerScore = phaseScores.reduce((acumulador,phaseScore) => {
 },0)//dá 0 como valor inicial ao acumulador
 
 console.log(rogerScore);
+
+
+
+//usando acumualdor pra retornar apenas um dos objetos dentro do array
+const aulas = [
+ {
+ nome: 'HTML 1',
+ min: 15
+ },
+ {
+ nome: 'HTML 2',
+ min: 10
+ },
+ {
+ nome: 'CSS 1',
+ min: 20
+ },
+ {
+ nome: 'JS 1',
+ min: 25
+ },
+]
+const listaAulas = aulas.reduce((acumulador, atual, index) => {
+ acumulador[index] = atual.nome; //pega o indice zero e refaz ele pra ter só o nome do que tá sendo iterado, ai faz isso pro indice 1 na proxima itreração tb, ai depois pro 2... ai vai redefinindo, ao invés de ter aula e minuto, vai ter só aula pois aula é a propriedade .nome
+ return acumulador;
+}, {})
+
+
+//reduce no método some:
+//método some:se tiver pelo menos dos valores escolhido, retorna true
+const frutas = ['Pera','Maaça','Uva'];
+const temUva =  frutas.some((fruta) => {
+  console.log(fruta);
+  return fruta === 'Uva'//vai retornar true se de fato tiver, pois vai varrer todos e checar se fruta === Uva em alguma das varridas... se for, retorna true, se nao for retorna false
+});
+
+console.log(temUva);//retorna true pois temUva é verdade(true)
+
+
+
+
+//find e findIndex
+const frutas = ['Pera','Maaça','Uva'];
+const buscaUva = frutas.findIndex((fruta) => {
+  return fruta ==='Uva' //retorna o index q a fruta desejada(uva) está
+})
+
+//obs:tmb podemos sar
+
+
+//método every: mesma coisa do some, porém se pelo menos um retornar false, tudo já retorna false
+
+//reduceRight: começa a iteração pela direita
+
+
 
 
 
@@ -3011,11 +3102,11 @@ console.log(p1);
 function Produto(nome,preco,estoque){
   this.nome = nome;
   this.preco = preco;
-  Object.defineProperty(this,'estoque',{
+  Object.defineProperty(this,'estoque',{ //primeiro escolho o objeto, nesse caso é o this pois estamos dentro da construtora, portanto iremos referencia-lá
     enumerable:true,//aqui digo que criei o estoque como uma chave(mostra a chave se for true, se for false nao mostra) obs: a chave que digo é tornar estoque como se fosse um this.estoque assim como this.nome e this.preco, porém não explícita como nome e preço... com isso, faço com q estoque não possa ser modificado de forma alguma
     value: estoque, //aqui dou o valor desse enumerable que foi criado, no caso é o valor do estoque q foi passado como argumento, o 3 foi pro molde e agora posso usá-lo aqui. Isso faz com que o valor do estoque agora não possa ser alterado.
     writable:false, //aqui digo se o valor pode ser alterado ou não
-    configurable:true //aqui digo se posso reconfigurar a chave ou não, ou seja, posso criar uma cópia com esses objetos e modificar todas proprioedades pra true ou false
+    configurable:true //aqui digo se posso reconfigurar a chave ou não, ou seja, posso criar uma cópia com esses objetos e modificar todas proprioedades pra true ou false.. configurable também diz se posso deletar a chave(se tiver true) e false q n posso deletar
   });//primeiro parametro é o objeto que quero mexer, no caso uso this pois é esse objeto aqui que quero mexer(vai mudando de acordo com novos objetos criados a partir desse molde... primeiro produto1, depois produto2... etc..)....... o proximo passo é escolher em que quero mexer, no caso escolhi a chave(propriedade) 'estoque'.... por ultime, abrimos um objetos que contém diversas propriedades a qual pode modificar oq quiser
 
   //se comentar esse segundo defineProperty, ai volta a dizer q não se pode alterar e o valor lá de baixo q era 5,vai voltar a ser 3
@@ -3284,6 +3375,13 @@ console.log(produto);
 
 
 
+//SEAL.. MESMA COISA DO FREEZE, MAS ELE PERIMITE ALTERAÇÃO, MAS DEPOIS QUE USA O SEAL N PODE MAIS, SÓ PERMITE UMA ALTREAÇÃO... POSSO MUDAR MAS NAO POSSO DELETAR
+//PREVINEEXTENSIONS : NÃO PERMITE QUE ADICIONE NOVAS, MAS PERMITE QUE APAGUE ANTIGAS
+
+object.isfrozen,issealded,isextensible ... pra ver se tá congelado, selado ou exensivel
+
+
+
 
 
 
@@ -3410,7 +3508,7 @@ console.dir(pessoa2);
 
 
 
-
+//USAMOS O ARRAY.PROTOTYPE.METODO.CALL : QUANDO TIVER UM OBJETO QUE SE PARECÇA COM ARRAY, POIS VAMOS MUDAR O VALOR DO THIS PRA UM ARRAY-LIKE, QUE SE PARECEÇA COM O OBJETO ORIGINAL
 //####### MT IMPORTANTE PROTOTYPE, A BASE DO JS#######
 //AQUI VAMOS JOGAR OS MÉTODOS PRA DENTRO DO PROTO, PRA SEMPRE QUE QUISER, ELE VAI ESTAR LÁ DISPNÍVEL, O PROTO FICA DENTRO DO 'PAI' DO OBJETO, OU SEJA, SEMPRE EXISTE. VAMOS JOGAR MÉTODOS PRO PROTO
 //JOGANDO O METODO NOMECOMPLETO EM UM 'MOLDE' PRA USA-LO COMO PADRAO E NAO GASTAR TANTA MEMÓRIA
@@ -3446,6 +3544,24 @@ console.dir(pessoa2);
 
 
 
+
+
+
+
+
+
+
+
+
+
+//PEGANDO UMA NODE LIST e a usando o prototype.metodo.call pra filtrar dentre varias li somente a que tem a classe ativo
+const li = document.querySelectorAll('li'); //seleciona todas li
+
+const filtro = Array.prototype.filter.call(li, function(item) {
+ return item.classList.contains('ativo'); //retorna só a li que tem a classe ativo
+});
+
+obs: para testar isso é só botar no html varios li dentro de uma ul e adcionar em algum deles a classe ativo, dai aqui vai ser retornado só os q tiverem a classe ativo
 
 
 
@@ -3793,7 +3909,7 @@ console.log(produto1.preco);
 let cpf = '028.794.232-52';
 let cpfLimpo = cpf.replace(/\D+/g, ''); //expressão regular pra dizer que tudo que não for um número, ser substituido por nada('');
 
-let cpfArray = Array.from(cpfLimpo);
+let cpfArray = Array.from(cpfLimpo);//transforma uma nodelist em array
 
 //console.log(cpfLimpo)
 console.log(cpfArray.map(objeto => {
@@ -5407,24 +5523,529 @@ let html = `<ul>
 
 
 
+
+
+
+
+
+
+//Number
+
+//método isNan, verifica se é um não número... NaN é not a number
+//isInteger, verifica se é inteiro
+//Number.parseFloat('10.50'); //retorna um número a partir de uma string, retorna ela no mesmo formato, permitindo decimais...obs: se tiver caracter na frente, retorna NaN
+//Number.parseInt('22.2'); //a partir de uma string, retorna um número initeiro mais próximo
+
+//toFixed.. //obs: o toFixed retorna uma string, portanto se quisermos fazer operações, vamos ter que transformar
+const numero = 2.2231;
+console.log(+numero.toFixed(2));//toFixed sserve para limitar a casa decimal, o parâmetro do método toFixed irá dizer quantas casas vão ter, nesse caso são duas... usa o '+' pra trasnformar em number
+
+//toLocaleString(lang,option):formata o numero e retorna uma string com configurações da localidade dada
+let moeda = 42.90;
+moeda = moeda.toLocaleString('pt-BR',{style: 'currency',currency:'BRL'});
+console.log(moeda);
+
+
+//objeto Math , o qual tem várias propriedades e métodos para expressões matemáticas
+Math.abs(-3);//tira de negativo pra positivo
+//randon,max e min tem em um exemplo acima
+Math.floor(3.6)//arredonda sempre pra baixo em inteiros
+Math.ceil(4.2)//arredonda sempre pra cima em inteiros
+Math.round(4.8);//arrendoda do que tá mais próximo
+
+
+
+
+
+
+// Retorne um número aleatório
+// entre 1050 e 2000
+const aleatorio = Math.floor(Math.random() * (2000 - 1050 + 1)) + 1050
+console.log(aleatorio)
+// Retorne o maior número da lista abaixo
+//achar o máximo usando o spread
+const numeros2 = '92, 5, 20, 90, 9';
+const arrayNumeros2 = numeros2.split(', ')
+
+const numeroMaior = Math.max(...arrayNumeros2); //o método max retorna na sequecnia escolhida, o maior número. Nesse caso, dentro do seu parÃmetro fizemos um spread pra colar todo o array aqui e dentro dele ver qual o maior e retornar
+console.log(numeroMaior);
+
+
+
+
+
+
+// Crie uma função para limpar os preços
+// e retornar os números com centavos arredondados
+// depois retorne a soma total
+
+const listaPrecos = ['R$ 59,99', ' R$ 100,222',
+ 'R$ 230 ', 'r$ 200'];
+
+function limpaPreco(preco){
+  preco = +preco.toUpperCase().replace('R$','').trim().replace(',','.')
+  preco = +preco.toFixed(2);
+  return preco;
+}
+
+let soma = 0;
+listaPrecos.forEach((preco) => {
+
+ soma = soma + limpaPreco(preco);
+})
+
+console.log(soma);
+
+
+limpaPreco(listaPrecos[0]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//Array:
+//transformando objeto criado em array
+
+const obj = {
+  0:'icaro',
+  1:'joao',
+  2:'predo',
+  length:3 //tem que tem o tamanho do objeto pra o método array from saber q tem q criar um array com esse número de objetos
+}
+
+const arrayObj = Array.from(obj);
+
+
+//Array.of() versus Array()
+//o array.of cria um array ordenado com tudo que a gente dá como parametro
+//o Array() cria um array com tamanho que for passado no parâmetro
+
+
+
+
+//métodos modificadores de array: 
+
+//sort: organiza o array por ordem alfabética
+const nomes = ['icaro', 'jao','pe','feijao'];
+nomes.sort(); 
+console.log(nomes)//modifica o array definitivamente, só vai voltar a ser de origem se tirar o método
+
+//sort modificando o array:
+
+
+//sort  com numeros. note que mesmo dando uma nova variavel para o sort, ele  modifica o array original
+const idades = [1,2,3,4,11];
+const sortIdade = idades.sort();//organiza numero a numero, e nao do menor para o maior
+console.log(sortIdade);
+
+
+
+//copyWithin
+const array = ['item 0','item 1','item 2','item 3'];
+const copyArray = array.copyWithin(1,2,3)//a partir do indice 1 que é o item 1, que é o primeiro parametro, faça uma cópia do indice 2 até o indice 3, que no caso o 2 é o segundo paraemtro e o 3 o terceiro
+console.log(copyArray);
+
+
+//fill : preecnhe todo array com o que passarmos no seu parametro
+//ex: ['item 1', 'item 2'].fill('banana'); // vai preecher tudo com banana
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//métodos de acesso, não muda o array:
+
+concat();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//exercicios com array:
+
+const comidas = ['Pizza', 'Frango', 'Carne', 'Macarrão'];
+// Remova o primeiro valor de comidas e coloque em uma variável
+const primeiroRemovido = comidas.shift();
+console.log(primeiroRemovido);
+// Remova o último valor de comidas e coloque em uma variável
+const ultimoRemovido = comidas.pop();
+console.log(ultimoRemovido);
+// Adicione 'Arroz' ao final da array
+const adicionaArroz = comidas.push('Arroz');
+console.log(comidas);
+// Adicione 'Peixe' e 'Batata' ao início da array
+const adicionaPeixeBatata = comidas.unshift('Peixe','Batata');
+console.log(comidas);
+
+const estudantes = ['Marcio', 'Brenda', 'Joana', 'Kleber',
+'Julia'];
+// Arrume os estudantes em ordem alfabética
+estudantes.sort();
+console.log(estudantes);
+// Inverta a ordem dos estudantes
+estudantes.reverse();
+console.log(estudantes);
+// Verifique se Joana faz parte dos estudantes
+const isJoana = estudantes.includes('Joana');
+console.log(isJoana);
+// Verifique se Juliana faz parte dos estudantes
+const isJuliana = estudantes.includes('Juliana');
+console.log(isJuliana);
+
+let html = `<section>
+ <div>Sobre</div>
+ <div>Produtos</div>
+ <div>Contato</div>
+ </section>`;
+
+ html = html.split('section').join('ul');
+ html = html.split('div').join('li');
+ console.log(html);
+// Substitua section por ul e div com li,
+// utilizando split e join
+const carros = ['Ford', 'Fiat', 'VW', 'Honda'];
+// Remova o último carro, mas antes de remover
+// salve a array original em outra variável
+const copyCarros = carros.slice();
+carros.pop();
+console.log(carros,copyCarros);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Retorne o valor total das compras
+const compras = [
+  {
+  item: 'Banana',
+  preco: 'R$ 4,99'
+  },
+  
+  {
+  item: 'Ovo',
+  preco: 'R$ 2,99'
+  },
+
+  {
+  item: 'Carne',
+  preco: 'R$ 25,49'
+  },
+
+  {
+  item: 'Refrigerante',
+  preco: 'R$ 5,35'
+  },
+
+  {
+  item: 'Quejo',
+  preco: 'R$ 10,60'
+  }
+ ]
+
+
+
+
+ const listaCompras = compras.reduce((acumulador,compra) => {
+   const limpaPreco = +compra.preco.replace('R$ ','').replace(',','.');
+   acumulador = acumulador + limpaPreco;
+   return acumulador
+ },0)
+
+console.log(listaCompras);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//usando o método call com forEach
+
+const videogames = ['PS1','PS2','PS3'];
+const frutas = ['Banana','Pera','Uva'];
+//primeiro paramtro do call é o videogames, mas se eu quiser mudar o this eu posso botando o frutas no lugar de videogames
+videogames.forEach.call(frutas,(videogame) => { //e acordo com qual eu botar aqui no frutas ou video game, é o this que vai ser alterado
+  console.log(videogame);
+})
+
+
+
+
+
+
+
+
+
+//aplicação real
+function Dom(seletor){ //cria uma construtora com um parametro seletor
+  this.element = document.querySelector(seletor);//propriedade que criamos dentro da função construtora Dom
+}
+
+//se eu quiser adicionar uma classe para esse novo elemento criado no dom
+Dom.prototype.ativo = function(classe){//adiciono no prototype da construtora Dom um novo método chamado ativo, que basicamente é uma funçao que recebe uma classe como argumento e a manipula
+  this.element.classList.add(classe);//uso o this para que faça isso para que todos os filhos que sejam criados, também esteja dispnivel para eles esse método ativo
+}
+
+
+const ul = new Dom('ul');//passa como ul por argumento pra função construtora Dom q recebe ul como parametro e lá a usa como seletor
+//agora se eu apssar no console ul , vai ser um objeto do tipo dom que tem dentro o elemtn
+//ul.element é o elemento do index que selecionamos
+
+
+//usando o call pra substituir o que já foi criado
+
+const li = {//pra substituir com call, precisa que o que irá substituir tenha element também pois precisa ser semelhante
+  element:document.querySelector('li')
+}
+
+//só por usar o call, ao invés de eu passar a classe pro ul, passo pro li
+ul.ativo.call(li, 'classePassadaPorAqui')//passo a classe para o método ativo
+
+
+
+
+//------------- melhorando esse código 
+function Dom(seletor) {
+  this.element = document.querySelector(seletor);
+ };
+ Dom.prototype.ativo = function(classe) {
+  this.element.classList.add(classe);
+ };
+ const lista = new Dom('ul');
+ const novoSeletor = {
+  element: document.querySelector('li')
+ }
+ //com call, ao invés de passar a classe pro ul, passa pro li
+ lista.ativo.call(novoSeletor,'ativar');
+ console.log(lista);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ //método apply: igual o call porém precisa estar dentro de um array
+ const numeros = [1,2,3,200,800,100,900];
+ Math.max.apply(null,numeros);
+ Math.max.call(null,3,4,5,6,7,900,100);
+
+ //toda vez que tiver usando uma função e tiver usando um argumento em comum, usamos o bind
+ //bind mesma coisa, porém retorna o contexto do this
+const li = document.querySelectorAll('li');
+const filtrarLi = Array.prototype.filter.bind(li,( item) => {
+  return item.classList.contains('ativo');
+});
+console.log(filtrarLi()); //retorna o item que tá ativo e posso agora reutilizar ele pra fazer uma modificação em um li por exemplo que tem certa classe
+
+
+
+//exemplo de bind:
+//médico que só recebe pacientes de 1,80 de altura e quer fazer um imc com eles
+function imc(altura,peso){
+  return peso / (altura * altura);
+}
+
+const imc180 = imc.bind(null,1.80)//o primeiro argumento é pra onde o this vai referenciar, nesse caso não precisa, então passamos null e no segundo argumento passamos o 1.80 fixo
+imc(1.80,70);//precisa passar os dois arugmentos
+imc180(70);// passa só o peso pois a altura já está fixa
+
+//retornando o mesmo contexto de this
+const $ = document.querySelectorAll.bind(document);//aqui o this é o proprio document
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//EXERCICIOS DE FUNCTIONS:
+
+//retornando numero de caracteres dos paragrafos existentes com call
+const paragrafos = document.querySelectorAll('p');
+
+const totalCaracteres = Array.prototype.reduce.call(paragrafos,(acumulador,paragrafo) => {
+  return acumulador + paragrafo.innerText.length;//soma o acumulador que começa em 0 ao tamanho do texto do paragrafo que vai ser varrido(todos);
+},0) //o referencido é o paragrafos pois é por ele que queremos varrer, de resto só usar o reduce normal
+console.log(totalCaracteres)
+
+
+
+//criar função a partir da criar elemento de maneira automática
+function criarElemento(tag,classe,conteudo){
+  const elemento = document.createElement(tag)// vai vir por referencia
+ classe ? elemento.classList.add(classe) : null; // se for passado por referencia classe ai adiciona, se n for passado nada ai fica null mesmo, ou seja, sem
+ conteudo ? elemento.innerHTML = conteudo : null;//
+ return elemento;
+}
+
+console.log(criarElemento('ul','ativo','criei esse conteudo por meio de uma funcao')) 
+
+
+//criando uma nova fncao pra adicionar titulo
+//vai criar titulo
+const h1titulo = criarElemento.bind(null,'h1','titulo');//primeiro parametro é nulo pois n quero referenciar ninguem,segundo é a referencia de tag q vamos mandar pra funcao criar elemento e o segundo o titulo que é a classe
+
+
+
+
+
+
+//exercicios com objetos:
+
+// Crie uma função que verifique
+// corretamente o tipo de dado
+function verificarDado(dado){
+return Object.prototype.toString.call(dado)
+}
+
+console.log(verificarDado([]));
+// Crie um objeto quadrado com
+// a propriedade lados e torne
+// ela imutável
+const quadrado = {};
+Object.defineProperties(quadrado,{
+  lados: {
+    value: 4,
+    enumerable:true,//de resto deixa tudo normal pois por padrão é falso..no caso o writable q queremo pois queremos deixar imutável
+  }
+})
+
+// Previna qualquer mudança
+// no objeto abaixo
+const configuracao = {
+  width: 800,
+  height: 600,
+  background: '#333'
+ }
+
+ Object.freeze(configuracao);
+ // Liste o nome de todas
+ // as propriedades do
+ // protótipo de String e Array
+ console.log(Object.getOwnPropertyNames(String.prototype))
+ console.log(Object.getOwnPropertyNames(Array.prototype))
+
+
+
+
+
 */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
